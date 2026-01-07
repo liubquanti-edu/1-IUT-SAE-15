@@ -1,21 +1,40 @@
-import csv
+import os
+import keyboard
 
-def extract_professors(csv_file):
-    professors = set()  # Використовуємо множину для уникнення дублікатів
-    with open(csv_file, 'r', encoding='utf-8') as file:
-        reader = csv.DictReader(file)
-        for row in reader:
-            prof = row.get('Prof', '').strip()
-            if prof and prof != 'Intervenant à préciser':  # Пропускаємо порожні значення або "Intervenant à préciser"
-                professors.add(prof)
-    return sorted(professors)  # Сортуємо імена в алфавітному порядку
+def clear_console():
+    """Очищення консолі."""
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+def display_menu(selected_index):
+    """Відображення меню з виділеним пунктом."""
+    menu_items = ["1. Перший пункт", "2. Другий пункт", "3. Третій пункт"]
+    clear_console()
+    print("Виберіть пункт меню (стрілки вгору/вниз, Enter для вибору):\n")
+    for i, item in enumerate(menu_items):
+        if i == selected_index:
+            print(f"> {item}")  # Виділений пункт
+        else:
+            print(f"  {item}")
 
 def main():
-    csv_file = 'data/ADECal.csv'  # Вкажіть шлях до вашого CSV-файлу
-    professors = extract_professors(csv_file)
-    print("Список викладачів:")
-    for prof in professors:
-        print(prof)
+    selected_index = 0
+    menu_items = ["1. Перший пункт", "2. Другий пункт", "3. Третій пункт"]
 
-if __name__ == '__main__':
+    display_menu(selected_index)
+
+    while True:
+        event = keyboard.read_event(suppress=True)
+        if event.event_type == "down":
+            if event.name == "down":
+                selected_index = (selected_index + 1) % len(menu_items)
+                display_menu(selected_index)
+            elif event.name == "up":
+                selected_index = (selected_index - 1) % len(menu_items)
+                display_menu(selected_index)
+            elif event.name == "enter":
+                clear_console()
+                print(f"Ви вибрали: {menu_items[selected_index]}")
+                break
+
+if __name__ == "__main__":
     main()
