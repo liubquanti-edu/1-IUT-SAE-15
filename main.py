@@ -2,6 +2,7 @@ import os
 import keyboard
 from colorama import Fore, Style, init
 from src.connect import connect_data
+from src.professor import choose_professor
 
 init(autoreset=True)
 
@@ -21,9 +22,9 @@ def display_menu(selected_index, connected_file):
     if connected_file:
         base_directory = os.getcwd()
         relative_path = os.path.relpath(connected_file, base_directory)
-        print(f"{Fore.BLUE}Données connecté: {relative_path}{Style.RESET_ALL}")  
+        print(f"{Fore.GREEN}Données connecté: {relative_path}{Style.RESET_ALL}")  
     else:
-        print(f"{Fore.RED}Aucun données connecté.{Style.RESET_ALL}")  
+        print(f"{Fore.RED}Aucun données connecté.{Style.RESET_ALL}")
 
 def main():
     selected_index = 0
@@ -40,8 +41,10 @@ def main():
                 selected_index = (selected_index - 1) % len(menu_items)
             elif event.name == "enter":
                 clear_console()
-                if selected_index == 1:  
-                    connected_file = connect_data()  
+                if selected_index == 0:  # Choisir un professeur
+                    choose_professor(connected_file)
+                elif selected_index == 1:  # Connecter les données
+                    connected_file = connect_data()
                 else:
                     print(f"Vous avez choisi: {menu_items[selected_index]}")
                     input("Appuyez sur Entrée pour revenir au menu...")
