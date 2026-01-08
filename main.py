@@ -1,6 +1,9 @@
 import os
 import keyboard
+from colorama import Fore, Style, init
 from src.connect import connect_data
+
+init(autoreset=True)
 
 def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -8,17 +11,19 @@ def clear_console():
 def display_menu(selected_index, connected_file):
     menu_items = ["Choisir un professeur", "Connecter les données", "Convertir les données"]
     clear_console()
-    print("Compagnon du fich de service\n")
+    print(f"{Fore.BLUE}Compagnon du fich de service\n{Style.RESET_ALL}")
     for i, item in enumerate(menu_items):
         if i == selected_index:
-            print(f"> {item}")
+            print(f"{Fore.CYAN}> {item}{Style.RESET_ALL}")  
         else:
-            print(f"  {item}")
+            print(f"{Fore.BLUE}  {item}{Style.RESET_ALL}")
     print("")
     if connected_file:
-        print(f"Données connecté: {connected_file}")
+        base_directory = os.getcwd()
+        relative_path = os.path.relpath(connected_file, base_directory)
+        print(f"{Fore.BLUE}Données connecté: {relative_path}{Style.RESET_ALL}")  
     else:
-        print("Aucun données connecté.")
+        print(f"{Fore.RED}Aucun données connecté.{Style.RESET_ALL}")  
 
 def main():
     selected_index = 0
