@@ -15,8 +15,8 @@ def calculate_hours(start_time, end_time):
 
 def generate_report(connected_file, professor_name):
     if not connected_file:
-        print(f"{Fore.RED}Aucun fichier connecté. Connectez un fichier avant de continuer.{Style.RESET_ALL}")
-        input("Натисніть Enter для повернення в меню...")
+        print(f"{Fore.RED}Aucun fichier connecté. Veuillez connecter un fichier avant de continuer.{Style.RESET_ALL}\n")
+        input(f"{Fore.CYAN}> Revenir au menu{Style.RESET_ALL}")
         return
 
     try:
@@ -25,8 +25,8 @@ def generate_report(connected_file, professor_name):
             
             required_columns = {'Prof', 'Group', 'Summary', 'HStart', 'HEnd'}
             if not required_columns.issubset(reader.fieldnames):
-                print(f"{Fore.RED}Файл не містить необхідних колонок: {required_columns - set(reader.fieldnames)}{Style.RESET_ALL}")
-                input("Натисніть Enter для повернення в меню...")
+                print(f"{Fore.RED}Le fichier ne contient pas les colonnes nécessaires : {required_columns - set(reader.fieldnames)}{Style.RESET_ALL}\n")
+                input(f"> Revenir au menu")
                 return
 
             modules = {}
@@ -57,14 +57,14 @@ def generate_report(connected_file, professor_name):
             
             clear_console()
 
-            print(f"{Fore.BLUE}Звіт для викладача: {professor_name}{Style.RESET_ALL}\n")
-            print(f"{Fore.YELLOW}{'Модуль':<30}{'CM (год)':<10}{'TD (год)':<10}{'TP (год)':<10}{Style.RESET_ALL}")
+            print(f"{Fore.BLUE}Rapport pour le professeur : {professor_name}{Style.RESET_ALL}\n")
+            print(f"{Fore.BLUE}{'Module':<30}{'CM (heures)':<15}{'TD (heures)':<15}{'TP (heures)':<15}{Style.RESET_ALL}")
             for module, hours in modules.items():
-                print(f"{module:<30}{hours['CM']:<10.2f}{hours['TD']:<10.2f}{hours['TP']:<10.2f}")
+                print(f"{Fore.BLUE}{module:<30}{hours['CM']:<15.2f}{hours['TD']:<15.2f}{hours['TP']:<15.2f}{Style.RESET_ALL}")
 
-            print(f"\n{Fore.GREEN}Загальна кількість годин у перерахунку на TD: {total_td_equivalent:.2f}{Style.RESET_ALL}")
-            input("Натисніть Enter для повернення в меню...")
+            print(f"\n{Fore.BLUE}Nombre total d'heures équivalent TD : {total_td_equivalent:.2f}{Style.RESET_ALL}\n")
+            input(f"{Fore.CYAN}> Revenir au menu{Style.RESET_ALL}")
 
     except Exception as e:
-        print(f"{Fore.RED}Помилка при обробці файлу: {e}{Style.RESET_ALL}")
-        input("Натисніть Enter для повернення в меню...")
+        print(f"{Fore.RED}Erreur lors du traitement du fichier : {e}{Style.RESET_ALL}\n")
+        input(f"{Fore.CYAN}> Revenir au menu{Style.RESET_ALL}")

@@ -39,7 +39,7 @@ def connect_data():
 
     if not csv_files:
         print(f"{Fore.RED}Aucun fichier CSV trouvé.\n{Style.RESET_ALL}")
-        input(f"{Fore.RED}> Revenir au menu{Style.RESET_ALL}")
+        input(f"{Fore.CYAN}> Revenir au menu{Style.RESET_ALL}")
         return None
 
     selected_file = display_csv_menu(csv_files)
