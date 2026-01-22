@@ -1,26 +1,27 @@
 import os
-import csv
-import keyboard
-from colorama import Fore, Style
-from src.dataprocess import generate_report
 from math import ceil
+import keyboard
+import pandas as pd
+from colorama import Fore, Style
+
+from src.dataprocess import generate_report
 
 def extract_professors(file_path):
-    professors = set()
     try:
-        with open(file_path, mode='r', encoding='utf-8') as csv_file:
-            reader = csv.DictReader(csv_file)
-            if 'Prof' not in reader.fieldnames:
-                print(f"{Fore.RED}La colonne 'Prof' est introuvable dans le fichier.{Style.RESET_ALL}")
-                input(f"\n{Fore.CYAN}> Revenir au menu{Style.RESET_ALL}")
-                return None
-            for row in reader:
-                if row['Prof']:
-                    professors.add(row['Prof'])
+        df = pd.read_csv(file_path)
     except Exception as e:
         print(f"{Fore.RED}Erreur lors de la lecture du fichier : {e}{Style.RESET_ALL}\n")
         input(f"{Fore.CYAN}> Revenir au menu{Style.RESET_ALL}")
         return None
+
+    if "Prof" not in df.columns:
+        print(f"{Fore.RED}La colonne 'Prof' est introuvable dans le fichier.{Style.RESET_ALL}")
+        input(f"\n{Fore.CYAN}> Revenir au menu{Style.RESET_ALL}")
+        return None
+
+    professors = (
+        df["Prof"].dropna().astype(str).str.strip().replace("", pd.NA).dropna().unique().tolist()
+    )
     return sorted(professors)
 
 def display_professor_menu(professors):
